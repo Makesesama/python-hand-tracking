@@ -25,11 +25,11 @@
       );
 
       # Custom packages for Ultraleap bindings
-      leapc-cffi = system: pkgsFor.${system}.python312Packages.callPackage ./leapc-cffi.nix {
+      leapc-cffi = system: pkgsFor.${system}.python312Packages.callPackage ./nix/leapc-cffi.nix {
         ultraleap-hand-tracking-service = pkgsUltraleap.${system}.ultraleap-hand-tracking-service;
       };
 
-      leapc-python-api = system: pkgsFor.${system}.python312Packages.callPackage ./leapc-python-api.nix {
+      leapc-python-api = system: pkgsFor.${system}.python312Packages.callPackage ./nix/leapc-python-api.nix {
         leapc_cffi = leapc-cffi system;
       };
 
