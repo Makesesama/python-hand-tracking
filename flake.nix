@@ -3,6 +3,8 @@
   inputs.nixpkgs-ultraleap.url = "github:NixOS/nixpkgs/7a7d128";  # PR #310138 - ultraleap packages
   inputs.systems.url = "github:nix-systems/default";
 
+  inputs.msgspec-osc.url = "github:Makesesama/msgspec-osc";
+
   outputs =
     { nixpkgs, nixpkgs-ultraleap, systems, ... }:
     let
@@ -47,6 +49,10 @@
           build
           cffi
           numpy
+
+          # Sending osc
+          inputs.msgspec-osc.packages.${system}.default
+          pythonosc
 
           # OpenCV with GUI support
           (opencv4.override { enableGtk3 = true; })
