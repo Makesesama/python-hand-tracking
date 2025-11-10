@@ -1,0 +1,19 @@
+--- a/setup.py
++++ b/setup.py
+@@ -127,13 +127,15 @@ def gather_leap_sdk():
+     # Copy the found header
+     if os.path.exists(leapc_header_path):
+-        shutil.copy(leapc_header_path, os.path.join(_RESOURCE_DIRECTORY, "LeapC.h"))
++        # Skip copy in Nix build - files are pre-populated
++        pass  # shutil.copy(leapc_header_path, os.path.join(_RESOURCE_DIRECTORY, "LeapC.h"))
+     else:
+         raise Exception(
+             "No LeapC.h found, please ensure you have Ultraleap Gemini Hand Tracking installed, or define "
+             "LEAPSDK_INSTALL_LOCATION environment variable to point to a LeapSDK directory."
+         )
+
+     # Create a symlink for the shared object
+     symlink_path = os.path.join(_RESOURCE_DIRECTORY, _OS_SHARED_OBJECT[get_system()])
+-    setup_symlink(libleapc_path, symlink_path)
++    # Skip symlink in Nix build - files are pre-populated
++    pass  # setup_symlink(libleapc_path, symlink_path)

@@ -1,0 +1,39 @@
+--- a/src/leap/__init__.py
++++ b/src/leap/__init__.py
+@@ -59,30 +59,11 @@ def check_required_files(directory_path: str) -> bool:
+ _OVERRIDE_LEAPSDK_LOCATION = os.getenv("LEAPSDK_INSTALL_LOCATION")
+
+-cffi_location = _OS_DEFAULT_CFFI_INSTALL_LOCATION[get_system()]
+-if _OVERRIDE_LEAPSDK_LOCATION is not None:
+-    cffi_location = _OVERRIDE_LEAPSDK_LOCATION
+-
+-cffi_path = os.path.join(cffi_location, "leapc_cffi")
+-if os.path.isdir(cffi_path):
+-    ret = check_required_files(cffi_path)
+-
+-    # TODO: If we can't find leapc_cffi, we could try building it
+-
+-    sys.path.append(cffi_location)
+-
+-    try:
+-        from leapc_cffi import ffi, libleapc
+-    except ImportError as import_error:
+-        if not ret:
+-            error_msg = f"Missing required files within {cffi_location}."
+-        else:
+-            error_msg = f"Unknown error, please consult readme for help. Attempting to find leapc_cffi within {cffi_location}"
+-        raise ImportError(
+-            f"Cannot import leapc_cffi: {error_msg}. Caught ImportError: {import_error}"
+-        )
+-else:
+-    error_msg = f"Error: Unable to find leapc_cffi dir within directory {cffi_location}"
+-    raise Exception(error_msg)
++# In Nix build, leapc_cffi is provided as a proper Python package dependency
++# so we can import it directly without filesystem lookups
++try:
++    from leapc_cffi import ffi, libleapc
++except ImportError as import_error:
++    raise ImportError(f"Cannot import leapc_cffi: {import_error}. Please ensure leapc_cffi package is installed.")
+
+ from .functions import (
+     get_now,
